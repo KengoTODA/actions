@@ -77,6 +77,9 @@ Verifies Maven Wrapper integrity by checking JAR files and their checksums.
 - `npm run format` - Format code with Prettier
 - `npm run format:check` - Check code formatting
 - `npm run clean` - Clean build artifacts
+- `npm run changeset` - Create a new changeset for version management
+- `npm run version-packages` - Apply changesets and version packages
+- `npm run release` - Publish packages (automated in CI)
 
 ### Building Individual Actions
 
@@ -113,6 +116,7 @@ npm run test
 - **Testing**: Vitest
 - **Linting**: ESLint with TypeScript support
 - **Formatting**: Prettier
+- **Version Management**: Changesets
 - **Package Manager**: npm with workspaces
 
 ## 🔄 CI/CD
@@ -131,11 +135,34 @@ The CI workflow (`.github/workflows/ci.yml`) runs on every pull request and:
 
 ### Release Workflow
 
-The release workflow (`.github/workflows/release.yml`) runs on pushes to main and:
+The release workflow (`.github/workflows/release.yml`) runs on pushes to main and uses [Changesets](https://github.com/changesets/changesets) for version management:
 
 1. Builds all actions
-2. Determines the next version from conventional commits
-3. Creates a GitHub release with release notes
+2. Creates Release Pull Requests when changesets are detected
+3. Automatically publishes releases when Release PRs are merged
+4. Creates GitHub releases with proper versioning
+
+#### Creating a Release
+
+To create a release:
+
+1. Create a changeset describing your changes:
+
+   ```bash
+   npm run changeset
+   ```
+
+2. Follow the interactive prompts to:
+
+   - Select which packages have changes
+   - Choose the type of change (patch, minor, major)
+   - Write a summary of the changes
+
+3. Commit the changeset file and create a pull request
+
+4. When merged to main, the release workflow will:
+   - Create a "Release" pull request with version bumps
+   - When the Release PR is merged, automatically publish and create GitHub releases
 
 ## 📋 Adding New Actions
 
