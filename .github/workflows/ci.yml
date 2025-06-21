@@ -17,6 +17,7 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v4
         with:
+          # checkout the current HEAD branch to push changes automatically
           ref: ${{ github.head_ref || github.ref }}
 
       - name: Setup Node.js 20
