@@ -1,0 +1,65 @@
+name: Release
+
+on:
+  push:
+    branches: [main]
+
+jobs:
+  release:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+          token: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Setup Node.js 20
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'npm'
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Build all actions
+        run: npm run build
+
+      - name: Determine next version
+        id: version
+        run: |
+          # Simple version determination based on conventional commits
+          # In a real scenario, you'd use semantic-release or changesets
+          if git log --oneline -1 | grep -q "feat"; then
+            echo "bump=minor" >> $GITHUB_OUTPUT
+          elif git log --oneline -1 | grep -q "fix"; then
+            echo "bump=patch" >> $GITHUB_OUTPUT
+          else
+            echo "bump=patch" >> $GITHUB_OUTPUT
+          fi
+
+          # Get current version from package.json
+          CURRENT_VERSION=$(node -p "require('./package.json').version")
+          echo "current=${CURRENT_VERSION}" >> $GITHUB_OUTPUT
+
+      - name: Create GitHub Release
+        if: steps.version.outputs.bump != ''
+        uses: actions/create-release@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          tag_name: v${{ steps.version.outputs.current }}
+          release_name: Release v${{ steps.version.outputs.current }}
+          body: |
+            ## Changes
+
+            See commit history for detailed changes.
+
+            ## Actions in this release
+
+            - github-comment@v${{ steps.version.outputs.current }}
+            - maven-wrapper-verify@v${{ steps.version.outputs.current }}
+          draft: false
+          prerelease: false

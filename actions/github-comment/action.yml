@@ -1,0 +1,26 @@
+name: 'GitHub Comment'
+description: 'Run github-comment tool to post comments on GitHub'
+author: 'KengoTODA'
+
+inputs:
+  version:
+    description: 'Version of github-comment to use'
+    required: false
+    default: 'latest'
+  config-path:
+    description: 'Path to github-comment configuration file'
+    required: false
+  template:
+    description: 'Template for the comment'
+    required: false
+  vars:
+    description: 'Variables for the template'
+    required: false
+
+runs:
+  using: 'node20'
+  main: 'dist/index.js'
+
+branding:
+  icon: 'message-circle'
+  color: 'blue'
