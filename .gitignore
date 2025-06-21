@@ -9,6 +9,10 @@ dist/
 build/
 *.tsbuildinfo
 
+# Exception: Include GitHub Action dist directories
+!github-comment/dist/
+!maven-wrapper-verify/dist/
+
 # OS generated files
 .DS_Store
 .DS_Store?
