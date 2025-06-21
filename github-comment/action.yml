@@ -10,12 +10,9 @@ inputs:
   config-path:
     description: 'Path to github-comment configuration file'
     required: false
-  template:
-    description: 'Template for the comment'
-    required: false
-  vars:
-    description: 'Variables for the template'
-    required: false
+  command:
+    description: 'GitHub comment command (post, exec, init, or hide) and its options'
+    required: true
 
 runs:
   using: 'node20'
