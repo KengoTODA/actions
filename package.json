@@ -5,7 +5,8 @@
   "license": "MIT",
   "private": true,
   "workspaces": [
-    "actions/*"
+    "github-comment",
+    "maven-wrapper-verify"
   ],
   "scripts": {
     "build": "turbo run build",

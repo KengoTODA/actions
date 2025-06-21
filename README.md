@@ -5,9 +5,8 @@ This repository contains a collection of GitHub Actions organized as a monorepo 
 ## 🏗️ Monorepo Structure
 
 ```
-├── actions/                    # Individual GitHub Actions
-│   ├── github-comment/         # GitHub comment posting action
-│   └── maven-wrapper-verify/   # Maven wrapper verification action
+├── github-comment/             # GitHub comment posting action
+├── maven-wrapper-verify/       # Maven wrapper verification action
 ├── .github/workflows/          # CI/CD workflows
 ├── package.json               # Root package with workspaces
 ├── turbo.json                 # Turborepo configuration
@@ -84,7 +83,7 @@ Verifies Maven Wrapper integrity by checking JAR files and their checksums.
 Each action can be built individually:
 
 ```bash
-cd actions/github-comment
+cd github-comment
 npm run build
 ```
 
@@ -101,7 +100,7 @@ npm run test
 Or run tests for a specific action:
 
 ```bash
-cd actions/github-comment
+cd github-comment
 npm run test
 ```
 
@@ -144,11 +143,11 @@ To add a new action to this monorepo:
 
 ### TODO: Add new Action module here...
 
-1. Create a new directory under `actions/`:
+1. Create a new directory in the root:
 
    ```bash
-   mkdir actions/your-action-name
-   cd actions/your-action-name
+   mkdir your-action-name
+   cd your-action-name
    ```
 
 2. Create the package.json:
