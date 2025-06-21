@@ -60,4 +60,4 @@ jobs:
           git config --local user.name "GitHub Action"
           git add .
           git commit -m "chore: update built action files [skip ci]"
-          git push
+          git push origin HEAD:${{ github.head_ref }}
