@@ -27,7 +27,7 @@ async function run(): Promise<void> {
     core.exportVariable('GH_COMMENT_REPO_ORG', repository.owner);
     core.exportVariable('GH_COMMENT_REPO_NAME', repository.repo);
     core.exportVariable('GH_COMMENT_SHA1', sha);
-    
+
     if (prNumber) {
       core.exportVariable('GH_COMMENT_PR_NUMBER', prNumber.toString());
     }
