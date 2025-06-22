@@ -11,7 +11,7 @@ import * as path from 'path';
 async function installGithubComment(version: string): Promise<string> {
   const platform = 'linux';
   const arch = 'amd64';
-  
+
   // Resolve version if 'latest'
   let resolvedVersion = version;
   if (version === 'latest') {
@@ -25,21 +25,21 @@ async function installGithubComment(version: string): Promise<string> {
 
   // Remove 'v' prefix if present
   const cleanVersion = resolvedVersion.replace(/^v/, '');
-  
+
   // Check if already cached
   const toolName = 'github-comment';
   let toolPath = tc.find(toolName, cleanVersion);
-  
+
   if (!toolPath) {
     core.info(`Installing github-comment version ${resolvedVersion}...`);
-    
+
     // Download the binary
     const downloadUrl = `https://github.com/suzuki-shunsuke/github-comment/releases/download/${resolvedVersion}/github-comment_${cleanVersion}_${platform}_${arch}.tar.gz`;
     core.info(`Downloading from: ${downloadUrl}`);
-    
+
     const tarPath = await tc.downloadTool(downloadUrl);
     const extractedPath = await tc.extractTar(tarPath);
-    
+
     // Cache the tool
     toolPath = await tc.cacheDir(extractedPath, toolName, cleanVersion);
     core.info(`github-comment cached at: ${toolPath}`);
@@ -48,7 +48,7 @@ async function installGithubComment(version: string): Promise<string> {
   }
 
   const binaryPath = path.join(toolPath, 'github-comment');
-  
+
   // Make sure the binary is executable
   if (fs.existsSync(binaryPath)) {
     fs.chmodSync(binaryPath, '755');

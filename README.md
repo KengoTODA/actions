@@ -30,8 +30,7 @@ Runs the [github-comment](https://suzuki-shunsuke.github.io/github-comment/) too
   with:
     version: 'latest'
     config-path: '.github-comment.yml'
-    template: 'path/to/template.md'
-    vars: 'key1=value1,key2=value2'
+    command: 'post --config .github-comment.yml'
 ```
 
 ### maven-wrapper-verify

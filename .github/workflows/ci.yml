@@ -11,7 +11,7 @@ jobs:
     runs-on: ubuntu-latest
     permissions:
       contents: write
-      pull-requests: read
+      pull-requests: write
 
     steps:
       - name: Checkout code
@@ -43,6 +43,13 @@ jobs:
 
       - name: Build all actions
         run: npm run build
+
+      - name: Smoke test - GitHub Comment Action
+        if: github.event_name == 'pull_request'
+        uses: ./github-comment
+        with:
+          command: 'post'
+          config-path: '.github/github-comment-test.yml'
 
       - name: Check for uncommitted changes
         id: verify-changed-files
