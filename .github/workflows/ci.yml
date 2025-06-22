@@ -50,6 +50,8 @@ jobs:
         with:
           command: 'post'
           config-path: '.github/github-comment-test.yml'
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Check for uncommitted changes
         id: verify-changed-files
