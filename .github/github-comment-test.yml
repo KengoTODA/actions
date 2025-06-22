@@ -5,8 +5,8 @@ post:
 
       The github-comment action is working correctly! ✅
 
-      - **Commit**: {{ .Env.GH_COMMENT_SHA1 }}
-      - **PR Number**: {{ .Env.GH_COMMENT_PR_NUMBER }}
-      - **Repository**: {{ .Env.GH_COMMENT_REPO_ORG }}/{{ .Env.GH_COMMENT_REPO_NAME }}
+      - **Commit**: {{ .Commit.SHA }}
+      - **PR Number**: {{ .PullRequest.Number }}
+      - **Repository**: {{ .Repo.Owner }}/{{ .Repo.Name }}
 
       This comment was posted automatically by the CI workflow as a smoke test.
