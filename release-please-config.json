@@ -1,0 +1,12 @@
+{
+  "packages": {
+    ".": {
+      "package-path": ".",
+      "include-component-in-tag": false
+    }
+  },
+  "release-type": "node",
+  "bump-minor-pre-major": true,
+  "include-v-in-tag": true,
+  "monorepo-tags": true
+}

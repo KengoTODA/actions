@@ -76,9 +76,6 @@ Verifies Maven Wrapper integrity by checking JAR files and their checksums.
 - `npm run format` - Format code with Prettier
 - `npm run format:check` - Check code formatting
 - `npm run clean` - Clean build artifacts
-- `npm run changeset` - Create a new changeset for version management
-- `npm run version-packages` - Apply changesets and version packages
-- `npm run release` - Publish packages (automated in CI)
 
 ### Building Individual Actions
 
@@ -115,7 +112,7 @@ npm run test
 - **Testing**: Vitest
 - **Linting**: ESLint with TypeScript support
 - **Formatting**: Prettier
-- **Version Management**: Changesets
+- **Version Management**: Release Please
 - **Package Manager**: npm with workspaces
 
 ## 🔄 CI/CD
@@ -134,34 +131,34 @@ The CI workflow (`.github/workflows/ci.yml`) runs on every pull request and:
 
 ### Release Workflow
 
-The release workflow (`.github/workflows/release.yml`) runs on pushes to main and uses [Changesets](https://github.com/changesets/changesets) for version management:
+The release workflow (`.github/workflows/release-please.yml`) runs on pushes to main and uses [Release Please](https://github.com/googleapis/release-please) for automated version management:
 
-1. Builds all actions
-2. Creates Release Pull Requests when changesets are detected
-3. Automatically publishes releases when Release PRs are merged
-4. Creates GitHub releases with proper versioning
+1. Automatically detects changes and creates Release Pull Requests
+2. Automatically determines version bumps based on conventional commits
+3. Creates GitHub releases when Release PRs are merged
+4. Generates and maintains CHANGELOG.md files
 
 #### Creating a Release
 
-To create a release:
+Release Please automates the entire release process using conventional commits:
 
-1. Create a changeset describing your changes:
+1. Make your changes and commit using conventional commit format:
 
    ```bash
-   npm run changeset
+   git commit -m "feat: add new functionality"
+   git commit -m "fix: resolve bug in action"
+   git commit -m "chore: update dependencies"
    ```
 
-2. Follow the interactive prompts to:
+2. When you push to main, Release Please will:
 
-   - Select which packages have changes
-   - Choose the type of change (patch, minor, major)
-   - Write a summary of the changes
+   - Analyze commits since the last release
+   - Determine the appropriate version bump (patch, minor, major)
+   - Create a Release Pull Request with version updates and changelog
 
-3. Commit the changeset file and create a pull request
-
-4. When merged to main, the release workflow will:
-   - Create a "Release" pull request with version bumps
-   - When the Release PR is merged, automatically publish and create GitHub releases
+3. When the Release PR is merged, Release Please will:
+   - Create a GitHub release with the new version
+   - Tag the release appropriately
 
 ## 📋 Adding New Actions
 
