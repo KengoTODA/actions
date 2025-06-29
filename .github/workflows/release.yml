@@ -8,6 +8,7 @@ concurrency: ${{ github.workflow }}-${{ github.ref }}
 
 jobs:
   release:
+    name: Release
     runs-on: ubuntu-latest
     permissions:
       contents: write
@@ -15,10 +16,8 @@ jobs:
       issues: write
 
     steps:
-      - name: Checkout code
+      - name: Checkout Repo
         uses: actions/checkout@v4
-        with:
-          fetch-depth: 0
 
       - name: Setup Node.js 20
         uses: actions/setup-node@v4
@@ -26,7 +25,7 @@ jobs:
           node-version: '20'
           cache: 'npm'
 
-      - name: Install dependencies
+      - name: Install Dependencies
         run: npm ci
 
       - name: Build all actions
@@ -36,9 +35,7 @@ jobs:
         id: changesets
         uses: changesets/action@v1
         with:
-          version: npm run version-packages
+          # This expects you to have a script called release which does a build for your packages and calls changeset publish
           publish: npm run release
-          commit: 'chore: release packages'
-          title: 'chore: release packages'
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
