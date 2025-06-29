@@ -5,9 +5,7 @@ This document contains valuable rules and knowledge learned during the developme
 ## 🏗️ Repository Architecture Rules
 
 ### Monorepo Structure
-- **Action Placement**: Actions must be placed in the root directory (e.g., `github-comment/`, `maven-wrapper-verify/`) NOT in subdirectories like `actions/github-comment/`
-  - **Reason**: GitHub Actions usage syntax `user/repo/action@version` requires actions to be at root level
-  - **Example**: `KengoTODA/actions/github-comment@v1` works, but `KengoTODA/actions/actions/github-comment@v1` does not
+- **Action Placement**: Actions must be placed in the root directory (e.g., `github-comment/`, `maven-wrapper-verify/`) NOT in subdirectories like `actions/github-comment/`. GitHub Actions usage syntax `user/repo/action@version` requires actions to be at root level.
 
 ### Technology Stack Decisions
 - **Node.js Version**: Always use Node.js 20 (latest supported by GitHub Actions)
