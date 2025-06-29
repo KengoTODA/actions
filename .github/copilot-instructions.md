@@ -5,9 +5,11 @@ This document contains valuable rules and knowledge learned during the developme
 ## 🏗️ Repository Architecture Rules
 
 ### Monorepo Structure
+
 - **Action Placement**: Actions must be placed in the root directory (e.g., `github-comment/`, `maven-wrapper-verify/`) NOT in subdirectories like `actions/github-comment/`. GitHub Actions usage syntax `user/repo/action@version` requires actions to be at root level.
 
 ### Technology Stack Decisions
+
 - **Node.js Version**: Always use Node.js 20 (latest supported by GitHub Actions)
 - **TypeScript**: Use TypeScript 5.2+ with strict configuration
 - **Build System**: Turborepo for monorepo management and pipeline orchestration
@@ -19,6 +21,7 @@ This document contains valuable rules and knowledge learned during the developme
 ## 🔧 GitHub Actions Development Rules
 
 ### Action Structure Requirements
+
 1. Each action must have:
    - `action.yml` - Action metadata and inputs/outputs
    - `package.json` - Node.js package configuration
@@ -27,13 +30,16 @@ This document contains valuable rules and knowledge learned during the developme
    - `tsconfig.json` - TypeScript configuration
 
 ### Action Inputs Best Practices
+
 - Keep inputs minimal and focused
 - Remove unnecessary inputs that add complexity
 - For external tools (like github-comment), provide `command` input for flexibility
 - Set up environment variables automatically to reduce user boilerplate
 
 ### Binary Installation Pattern
+
 When wrapping external CLI tools:
+
 1. Download from GitHub releases
 2. Use `@actions/tool-cache` for caching
 3. Handle version resolution (`latest` → actual version)
@@ -41,7 +47,9 @@ When wrapping external CLI tools:
 5. Cache tools to improve performance
 
 ### Environment Variables Setup
+
 For GitHub context, automatically set these variables:
+
 - `GH_COMMENT_REPO_ORG` - Repository owner
 - `GH_COMMENT_REPO_NAME` - Repository name
 - `GH_COMMENT_SHA1` - Commit SHA
@@ -50,30 +58,36 @@ For GitHub context, automatically set these variables:
 ## 🚀 CI/CD Workflow Rules
 
 ### Permissions Management
+
 Always specify explicit permissions for workflow jobs:
 
 **CI Workflow (`pull_request`):**
+
 ```yaml
 permissions:
-  contents: write        # For git push
-  pull-requests: write   # For PR interactions
+  contents: write # For git push
+  pull-requests: write # For PR interactions
 ```
 
 **Release Workflow (`push` to main):**
+
 ```yaml
 permissions:
-  contents: write        # For releases
-  issues: write         # For changesets
-  pull-requests: write  # For release PRs
+  contents: write # For releases
+  issues: write # For changesets
+  pull-requests: write # For release PRs
 ```
 
 ### Git Operations in CI
+
 - **Checkout Strategy**: Use `ref: ${{ github.head_ref || github.ref }}` to avoid merge commits
 - **Push Strategy**: Use `git push origin HEAD:${{ github.head_ref }}` for detached HEAD scenarios
 - **Auto-commit Pattern**: Check for changes, then commit with `[skip ci]` to avoid infinite loops
 
 ### Workflow Concurrency
+
 Add concurrency control to release workflows:
+
 ```yaml
 concurrency: ${{ github.workflow }}-${{ github.ref }}
 ```
@@ -81,11 +95,13 @@ concurrency: ${{ github.workflow }}-${{ github.ref }}
 ## 🧪 Testing and Quality Rules
 
 ### Smoke Testing
+
 - Implement smoke tests for actions in CI workflow
 - Use actual action (`uses: ./action-name`) with test configuration
 - Provide required environment variables (`GITHUB_TOKEN`)
 
 ### Code Formatting
+
 - Use `.prettierignore` to exclude build artifacts:
   ```
   */dist/
@@ -94,19 +110,24 @@ concurrency: ${{ github.workflow }}-${{ github.ref }}
 - Format check should pass before any git operations
 
 ### Template Systems
+
 When using external tools with templates:
+
 - Use built-in template variables (e.g., `.Commit.SHA`, `.PullRequest.Number`)
 - Avoid environment variable references in templates (e.g., `.Env.*`) as they cause rendering errors
 
 ## 📦 Build and Distribution Rules
 
 ### Build Artifacts
+
 - Commit `dist/` directories to repository (required for GitHub Actions)
 - Use `@vercel/ncc` for single-file builds with source maps
 - Include license information in builds: `--license licenses.txt`
 
 ### Turborepo Configuration
+
 Structure pipeline with proper dependencies:
+
 ```json
 {
   "build": {
@@ -122,21 +143,26 @@ Structure pipeline with proper dependencies:
 ## 🔄 Version Management Rules
 
 ### Changesets Workflow
+
 1. **For Changes**: Run `npm run changeset` to create changeset files
 2. **Release Process**: Changesets automatically creates Release PRs
 3. **Publishing**: Merging Release PR triggers automatic GitHub release
 
 ### Conventional Commits
+
 Use conventional commit format for changesets:
+
 - `feat:` - New features
-- `fix:` - Bug fixes  
+- `fix:` - Bug fixes
 - `chore:` - Maintenance tasks
 - `docs:` - Documentation changes
 
 ## 🛠️ Development Experience Rules
 
 ### Package Scripts Standardization
+
 Each action should have consistent scripts:
+
 ```json
 {
   "build": "ncc build src/index.ts -o dist --source-map --license licenses.txt",
@@ -149,6 +175,7 @@ Each action should have consistent scripts:
 ```
 
 ### Dependency Management
+
 - Use exact versions for runtime dependencies
 - Use ranges for dev dependencies
 - Keep `@actions/*` packages up to date
@@ -157,17 +184,20 @@ Each action should have consistent scripts:
 ## 🎯 Action Design Principles
 
 ### User Experience
+
 - Minimize required inputs
 - Provide sensible defaults
 - Auto-configure environment when possible
 - Clear error messages with actionable guidance
 
 ### Performance
+
 - Cache external tool downloads
 - Use Turborepo for parallel builds
 - Optimize bundle sizes with ncc
 
 ### Reliability
+
 - Handle edge cases (detached HEAD, missing PR context)
 - Validate inputs before execution
 - Provide clear error messages
