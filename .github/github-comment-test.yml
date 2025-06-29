@@ -1,0 +1,12 @@
+post:
+  default:
+    template: |
+      ## 🧪 Smoke Test Results
+
+      The github-comment action is working correctly! ✅
+
+      - **Commit**: {{ .SHA1 }}
+      - **PR Number**: {{ .PRNumber }}
+      - **Repository**: {{ .Org }}/{{ .Repo }}
+
+      This comment was posted automatically by the CI workflow as a smoke test.

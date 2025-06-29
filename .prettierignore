@@ -1,0 +1,12 @@
+# Build artifacts and compiled files
+*/dist/
+**/dist/**
+
+# Node modules
+node_modules/
+
+# Changeset files
+.changeset/
+
+# Git and IDE files
+.git/

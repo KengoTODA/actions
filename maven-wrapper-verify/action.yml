@@ -1,0 +1,21 @@
+name: 'Maven Wrapper Verify'
+description: 'Verify Maven Wrapper integrity'
+author: 'KengoTODA'
+
+inputs:
+  working-directory:
+    description: 'Working directory to search for Maven wrapper'
+    required: false
+    default: '.'
+  allow-snapshots:
+    description: 'Allow snapshot versions in Maven wrapper'
+    required: false
+    default: 'false'
+
+runs:
+  using: 'node20'
+  main: 'dist/index.js'
+
+branding:
+  icon: 'shield'
+  color: 'green'
